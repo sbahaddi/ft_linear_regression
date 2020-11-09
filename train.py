@@ -16,17 +16,19 @@ if args.visu == "train":
     ax = figure.add_subplot(1, 1, 1)
 
 
-def plot_cicle(X, Y, Y_pred):
+def plot_cicle(X, Y, Y_pred, theta0, theta1):
     ax.clear()
     ax.scatter(X, Y)
     ax.plot(X, Y_pred, "r")
+    ax.text(0, 0.1, "theta0 = {}".format(theta0), fontsize=8)
+    ax.text(0, 0, "theta1 = {}".format(theta1), fontsize=8)
     plt.pause(0.0001)
 
 
-# def plot_finalTrain(X, Y, Y_pred):
-#   plt.scatter(X, Y)
-#  plt.plot(X, Y_pred, "r")
-# plt.show()
+def plot_finalTrain(X, Y, Y_pred):
+    plt.scatter(X, Y)
+    plt.plot(X, Y_pred, "r")
+    plt.show()
 
 
 class Regression:
@@ -64,9 +66,6 @@ class Regression:
         while True:
             Y_pred = self.hypothesis(self.theta0, self.theta1, self.X_norm)
 
-            if iteration % 3000 == 0 and args.visu == "train":
-                plot_cicle(self.X_norm, self.Y_norm, Y_pred)
-
             self.cost_history.append(
                 (1 / (2 * m)) * np.sum(np.square(Y_pred - self.Y_norm))
             )
@@ -80,6 +79,9 @@ class Regression:
 
             self.theta0 -= lr * tmp_theta0
             self.theta1 -= lr * tmp_theta1
+
+            if iteration % 3000 == 0 and args.visu == "train":
+                plot_cicle(self.X_norm, self.Y_norm, Y_pred, self.theta0, self.theta1)
 
             iteration += 1
         self.Y_pred = Y_pred
@@ -103,3 +105,5 @@ if __name__ == "__main__":
             plt.xlabel("Number of Iterations")
             plt.ylabel("Cost")
             plt.show()
+        elif args.visu == "on":
+            plot_finalTrain(regression.X_norm, regression.Y_norm, regression.Y_pred)
