@@ -2,7 +2,6 @@ import argparse
 import pandas as pd
 from thetas import getThetas, saveThetas
 from readCsv import openCsv
-from plot import plot_finalTrain
 
 
 def predictPrice(theta0, theta1, mileage):

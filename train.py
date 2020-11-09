@@ -67,6 +67,10 @@ class Regression:
             if iteration % 3000 == 0 and args.visu == "train":
                 plot_cicle(self.X_norm, self.Y_norm, Y_pred)
 
+            self.cost_history.append(
+                (1 / (2 * m)) * np.sum(np.square(Y_pred - self.Y_norm))
+            )
+
             tmp_theta0 = (1 / m) * np.sum(Y_pred - self.Y_norm)
             tmp_theta1 = (1 / m) * np.sum(self.X_norm * (Y_pred - self.Y_norm))
 
@@ -92,4 +96,10 @@ if __name__ == "__main__":
         saveThetas("thetas", regression.theta0, regression.theta1)
         if args.visu == "train":
             plt.ioff()
+            plt.show()
+        elif args.visu == "mse":
+            plt.plot(range(len(regression.cost_history)), regression.cost_history, "r")
+            plt.title("Cost Through Iterations")
+            plt.xlabel("Number of Iterations")
+            plt.ylabel("Cost")
             plt.show()
